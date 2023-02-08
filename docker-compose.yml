@@ -3,7 +3,9 @@ version: '3'
 services:
   server:
     container_name: server
-    build: .
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     volumes:
       - ..:/go/src/server:cached
     ports:
@@ -30,7 +32,20 @@ services:
     volumes:
       - data:/var/lib/db
 
+
+  redis:
+    image: redis:7.0.2
+    command: redis-server --appendonly yes
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - type: volume
+        source: redis-volume
+        target: /data
+
 volumes: 
   data:
+  redis-volume:
 
   
